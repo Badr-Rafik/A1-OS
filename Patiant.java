@@ -27,7 +27,7 @@ public class Patiant extends Thread {
 
     @Override
     public void run() {
-        hospital.patiantArrived(this);
+        // hospital.patiantArrived(this);
     }
 
 
