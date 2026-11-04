@@ -13,7 +13,7 @@ public class WatingRoom {
     Semaphore empty = new Semaphore(size);
     Semaphore filled = new Semaphore(0);
 
-    public void produce(Patiant patiant) throws InterruptedException{
+    public void AddPatiant(Patiant patiant) throws InterruptedException{
 
         empty.acquire(); 
         store[input] = patiant;
@@ -24,7 +24,7 @@ public class WatingRoom {
         filled.release();
     }
 
-    public Patiant consume() throws InterruptedException {
+    public Patiant MovePatiant() throws InterruptedException {
 
         filled.acquire();
         Patiant patiant = store[output];
