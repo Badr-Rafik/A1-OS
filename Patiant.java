@@ -27,7 +27,11 @@ public class Patiant extends Thread {
 
     @Override
     public void run() {
-        // hospital.patiantArrived(this);
+        try {
+            hospital.patiantArrived(this);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
     }
 
 
