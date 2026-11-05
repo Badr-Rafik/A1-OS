@@ -20,7 +20,7 @@ public class Doctor extends Thread {
             while (true) {
 
                 // Wait until a patient becomes available
-                Patient patient = hospital.getNextPatient();
+                Patient patient = hospital.getNextPatient(doctorId);
 
                 // Stop signal
                 if (patient == null) {
@@ -34,12 +34,6 @@ public class Doctor extends Thread {
 
                 System.out.println(
                         "Doctor " + doctorId
-                                + " is assigned to "
-                                + patient.getPatientName() + "."
-                );
-
-                System.out.println(
-                        "Doctor " + doctorId
                                 + " is trying to acquire a treatment room."
                 );
 
@@ -48,18 +42,11 @@ public class Doctor extends Thread {
 
                 if (acquired) {
 
-                    System.out.println(
-                            "Doctor " + doctorId
-                                    + " acquired a treatment room."
-                    );
+                    boolean roomReleased = false;
 
                     try {
 
-                        System.out.println(
-                                "Doctor " + doctorId
-                                        + " begins treating "
-                                        + patient.getPatientName() + "."
-                        );
+                        hospital.treatmentStarted(doctorId, patient);
 
                         // Random treatment duration: 1 to 5 seconds
                         int treatmentTime =
@@ -67,21 +54,19 @@ public class Doctor extends Thread {
 
                         Thread.sleep(treatmentTime);
 
-                        System.out.println(
-                                "Doctor " + doctorId
-                                        + " finished treating "
-                                        + patient.getPatientName() + "."
+                        hospital.finishAndReleaseTreatmentRoom(
+                                doctorId,
+                                patient
                         );
+
+                        roomReleased = true;
 
                     } finally {
 
-                        // Release the treatment room
-                        hospital.releaseTreatmentRoom();
+                        if (!roomReleased) {
 
-                        System.out.println(
-                                "Doctor " + doctorId
-                                        + " released the treatment room."
-                        );
+                            hospital.releaseTreatmentRoom(doctorId);
+                        }
                     }
 
                     System.out.println(
