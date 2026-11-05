@@ -78,16 +78,10 @@ public class Hospital {
             // Show the arriving patients
             printArrivingPatients();
 
-            // Start patients
+            // Use one producer so patients enter the bounded buffer in arrival order.
             for (Patient patient : patients) {
 
-                patient.start();
-            }
-
-            // Wait until all patients enter the waiting room
-            for (Patient patient : patients) {
-
-                patient.join();
+                patient.run();
             }
 
             // Wait until all doctors finish
@@ -171,10 +165,10 @@ public class Hospital {
     }
 
     // Get the next patient (null means stop)
-    public Patient getNextPatient()
+    public Patient getNextPatient(int doctorId)
             throws InterruptedException {
 
-        return waitingRoom.removePatient();
+        return waitingRoom.removePatient(doctorId);
     }
 
     // Return patient to waiting room
@@ -192,9 +186,21 @@ public class Hospital {
     }
 
     // Release treatment room
-    public void releaseTreatmentRoom() {
+    public void treatmentStarted(int doctorId, Patient patient) {
 
-        treatmentRooms.release();
+        treatmentRooms.treatmentStarted(doctorId, patient);
+    }
+
+    // Finish treatment and release the room as one ordered event
+    public void finishAndReleaseTreatmentRoom(int doctorId, Patient patient) {
+
+        treatmentRooms.finishAndRelease(doctorId, patient);
+    }
+
+    // Release a room when treatment is interrupted
+    public void releaseTreatmentRoom(int doctorId) {
+
+        treatmentRooms.release(doctorId);
     }
 
     // Start doctors
