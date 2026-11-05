@@ -92,7 +92,7 @@ public class WaitingRoom {
     }
 
     // Remove a patient (null means a stop signal)
-    public Patient removePatient()
+    public synchronized Patient removePatient(int doctorId)
             throws InterruptedException {
 
         filled.acquire();
@@ -114,7 +114,16 @@ public class WaitingRoom {
             mutexOut.release();
         }
 
-        // The seat becomes free as soon as the doctor takes the patient
+        if (patient != null) {
+
+            System.out.println(
+                    "Doctor " + doctorId
+                            + " is assigned to "
+                            + patient.getPatientName() + "."
+            );
+        }
+
+        // Make the freed seat available after the assignment is visible in the log.
         empty.release();
 
         return patient;
