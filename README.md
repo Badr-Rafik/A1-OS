@@ -287,7 +287,7 @@ Simulation completed.
 
 <div align="center">
 
-<img src="assets/team.svg" alt="Kareem Ahmed, Badr, Adham, Abdelrahman, Malik" width="100%"/>
+<img src="assets/team (2).svg" alt="Kareem Ahmed, Badr, Adham, Abdelrahman, Malik" width="100%"/>
 
 <br/>
 
