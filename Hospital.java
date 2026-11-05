@@ -1,7 +1,7 @@
 public class Hospital {
 
     private WatingRoom waitingRoom;
-    private Semaphore treatmentRooms;
+    private TreatmentRooms treatmentRooms;
     private Doctor[] doctors;
 
     public Hospital(int waitingRoomSize, int numberOfDoctors) {
@@ -9,7 +9,7 @@ public class Hospital {
         waitingRoom = new WatingRoom(waitingRoomSize);
 
         // Two available treatment rooms
-        treatmentRooms = new Semaphore(2);
+        treatmentRooms = new TreatmentRooms(2, 3000);
 
         doctors = new Doctor[numberOfDoctors];
 
@@ -37,7 +37,7 @@ public class Hospital {
     public boolean acquireTreatmentRoom()
             throws InterruptedException {
 
-        return treatmentRooms.acquire(3000);
+        return treatmentRooms.acquire();
     }
 
     public void releaseTreatmentRoom() {
