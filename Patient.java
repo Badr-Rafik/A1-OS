@@ -1,4 +1,4 @@
-public class Patient extends Thread {
+public class Patient implements Runnable {
 
     private int patientId;
     private String name;
